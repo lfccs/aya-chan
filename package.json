@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lfccs/ayabot.git"
+    "url": "git+https://github.com/lfccs/aya-chan.git"
   },
   "author": "felcs",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lfccs/ayabot/issues"
+    "url": "https://github.com/lfccs/aya-chan/issues"
   },
-  "homepage": "https://github.com/lfccs/ayabot#readme",
+  "homepage": "https://github.com/lfccs/aya-chan#readme",
   "dependencies": {
     "discord.js": "^12.4.1",
     "distube": "^2.8.1",
