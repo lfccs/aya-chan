@@ -1,0 +1,26 @@
+{
+  "name": "aya-chan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lfccs/ayabot.git"
+  },
+  "author": "felcs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lfccs/ayabot/issues"
+  },
+  "homepage": "https://github.com/lfccs/ayabot#readme",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "distube": "^2.8.1",
+    "fs": "0.0.1-security",
+    "opusscript": "0.0.7",
+    "ytdl-core": "^4.0.3"
+  }
+}
