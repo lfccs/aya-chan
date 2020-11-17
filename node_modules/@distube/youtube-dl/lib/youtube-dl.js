@@ -15,33 +15,14 @@ const {
   isString
 } = require('./util')
 
-let ytdlBinary = ''
+let ytdlBinary = ""
 
 const execa = universalify.fromPromise(require('execa'))
 
 function youtubeDl (args, options, cb) {
-  if (isWin)
-    return execa(ytdlBinary, args, options, function done (err, output) {
-      if (err) return cb(err)
-      return cb(
-        null,
-        output.stdout ? output.stdout.trim().split(/\r?\n/) : undefined
-      )
-    })
-
-  return execa('python3 ' + ytdlBinary, args, options, function done (
-    err,
-    output
-  ) {
-    if (err)
-      return execa(ytdlBinary, args, options, function done (e, o) {
-        if (e) return cb(e)
-        return cb(null, o.stdout ? o.stdout.trim().split(/\r?\n/) : undefined)
-      })
-    return cb(
-      null,
-      output.stdout ? output.stdout.trim().split(/\r?\n/) : undefined
-    )
+  return execa(ytdlBinary, args, options, function done (err, output) {
+    if (err) return cb(err)
+    return cb(null, output.stdout ? output.stdout.trim().split(/\r?\n/) : undefined)
   })
 }
 

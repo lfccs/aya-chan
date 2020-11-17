@@ -17,7 +17,8 @@ module.exports=
         const channelList = message.guild.channels.cache.keyArray()
         let channelLength = channelList.length
         
-        let rol = myrole(2)
+        //let rol = myrole(2)
+        let rol = myrole(GetRoleMentions(args))
         let emb = CriarEmbed(rol.name)
 
         for(i = 0; channelLength > i; i++)
@@ -50,8 +51,16 @@ module.exports=
         //busca o cargo
         function myrole(id)
         {
-            let role = message.guild.roles.cache.find(r => r.id === `${roleList[id]}`);
-            return role         
+            if(id.length > 4)
+            {
+                let role = message.guild.roles.cache.find(r => r.id === `${id}`);
+                return role   
+            }
+            else 
+            {
+                let role = message.guild.roles.cache.find(r => r.id === `${roleList[id]}`);
+                return role  
+            }       
 
         }
         
@@ -104,6 +113,25 @@ module.exports=
                     name: `${canal}`, value: `${perms}` 
                 },
             )
+        }
+
+        function GetRoleMentions(args) 
+        {
+            if (!args) return;
+
+            let ment = args[0]
+
+            if (ment.startsWith('<@&') && ment.endsWith('>')) 
+            {
+		        ment = ment.slice(3, -1);
+
+                if (ment.startsWith('!')) 
+                {
+			        ment = ment.slice(1);
+		        }
+
+		        return ment
+	        }
         }
     }     
 }
