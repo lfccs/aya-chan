@@ -3,8 +3,11 @@ module.exports=
     name: "poderes",
     description: "mostra todos os poderes dos cargos de acordo coms os canais",
     execute(message, args)
-    {   var texto = ""
+    {  
+        const fs = require("fs")
+        var texto = ""
         var permlist = []
+        
 
         //lista das permissoes e emojis
         const {array, emojis, nomes} = require('../config.json')
@@ -12,6 +15,7 @@ module.exports=
         // lista dos cargos 
         const roleList = message.guild.roles.cache.keyArray()
         let roleLength = roleList.length
+        
 
         //lista dos canais
         const channelList = message.guild.channels.cache.keyArray()
@@ -19,19 +23,30 @@ module.exports=
         
         //let rol = myrole(2)
         let rol = myrole(GetRoleMentions(args))
+        let chan = mychannel(GetChannel(args))
         let emb = CriarEmbed(rol.name)
 
-        for(i = 0; channelLength > i; i++)
+        if (!chan)
         {
-            //texto = `${texto} \n ${chan}`
+            for(i = 0; channelLength > i; i++)
+            {
+                //texto = `${texto} \n ${chan}`
 
-            let chan = mychannel(i)
+                chan = mychannel(i)
+                let perms = chan.permissionsFor(rol)
+                let stringPermissions = perms.map(p => `${[p]}`).join()
+                addpcanal(chan.name, stringPermissions, emb)
+            }
+            message.channel.send(emb)
+        }
+        else 
+        {
             let perms = chan.permissionsFor(rol)
-            let stringPermissions = permissoes(perms).toString()
+            let stringPermissions = permissoes(perms).map(p => `${p}`).join("\n")
             addpcanal(chan.name, stringPermissions, emb)
+            message.channel.send(emb)
         }
 
-        message.channel.send(emb)
         //message.channel.send(texto)
         
         /*const myle = myrole.length
@@ -67,8 +82,18 @@ module.exports=
         //busca o canal 
         function mychannel(id)
         {
-            let chan = message.guild.channels.cache.find(r => r.id == `${channelList[id]}`)
-            return chan
+            if(!id && id != 0) return
+
+            if(id.length > 4)
+            {
+                let chan = message.guild.channels.cache.find(r => r.id === `${id}`);
+                return chan   
+            }
+            else 
+            {
+                let chan = message.guild.channels.cache.find(r => r.id == `${channelList[id]}`)
+                return chan
+            }
         }
 
         //busca as permissoes
@@ -124,6 +149,27 @@ module.exports=
             if (ment.startsWith('<@&') && ment.endsWith('>')) 
             {
 		        ment = ment.slice(3, -1);
+
+                if (ment.startsWith('!')) 
+                {
+			        ment = ment.slice(1);
+		        }
+
+		        return ment
+	        }
+        }
+        function GetChannel(args) 
+        {
+            if (!args) return;
+
+            let ment = args[1]
+            if (!ment) {
+                return
+            }
+
+            if (ment.startsWith('<#') && ment.endsWith('>')) 
+            {
+		        ment = ment.slice(2, -1);
 
                 if (ment.startsWith('!')) 
                 {
