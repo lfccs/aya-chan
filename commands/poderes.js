@@ -1,55 +1,51 @@
-module.exports=
+module.exports.run = async(client,message, args) =>
 {
-    name: "poderes",
-    description: "mostra todos os poderes dos cargos de acordo coms os canais",
-    execute(message, args)
-    {  
-        const fs = require("fs")
-        var texto = ""
-        var permlist = []
-        
+    const fs = require("fs")
+    var texto = ""
+    var permlist = []
+    
 
-        //lista das permissoes e emojis
-        const {array, emojis, nomes} = require('../config.json')
+    //lista das permissoes e emojis
+    const {array, emojis, nomes} = require('../config.json')
 
-        // lista dos cargos 
-        const roleList = message.guild.roles.cache.keyArray()
-        let roleLength = roleList.length
-        
+    // lista dos cargos 
+    const roleList = message.guild.roles.cache.keyArray()
+    let roleLength = roleList.length
+    
 
-        //lista dos canais
-        const channelList = message.guild.channels.cache.keyArray()
-        let channelLength = channelList.length
-        
-        //let rol = myrole(2)
-        let rol = myrole(GetRoleMentions(args))
-        let chan = mychannel(GetChannel(args))
-        let emb = CriarEmbed(rol.name)
+    //lista dos canais
+    const channelList = message.guild.channels.cache.keyArray()
+    let channelLength = channelList.length
+    
+    //let rol = myrole(2)
+    let rol = myrole(GetRoleMentions(args))
+    let chan = mychannel(GetChannel(args))
+    let emb = CriarEmbed(rol.name)
 
-        if (!chan)
+    if (!chan)
+    {
+        for(i = 0; channelLength > i; i++)
         {
-            for(i = 0; channelLength > i; i++)
-            {
-                //texto = `${texto} \n ${chan}`
+            //texto = `${texto} \n ${chan}`
 
-                chan = mychannel(i)
-                let perms = chan.permissionsFor(rol)
-                let stringPermissions = perms.map(p => `${[p]}`).join()
-                addpcanal(chan.name, stringPermissions, emb)
-            }
-            message.channel.send(emb)
-        }
-        else 
-        {
+            chan = mychannel(i)
             let perms = chan.permissionsFor(rol)
-            let stringPermissions = permissoes(perms).map(p => `${p}`).join("\n")
+            let stringPermissions = perms.map(p => `${[p]}`).join()
             addpcanal(chan.name, stringPermissions, emb)
-            message.channel.send(emb)
         }
+        message.channel.send(emb)
+    }
+    else 
+    {
+        let perms = chan.permissionsFor(rol)
+        let stringPermissions = permissoes(perms).map(p => `${p}`).join("\n")
+        addpcanal(chan.name, stringPermissions, emb)
+        message.channel.send(emb)
+    }
 
-        //message.channel.send(texto)
-        
-        /*const myle = myrole.length
+    //message.channel.send(texto)
+    
+    /*const myle = myrole.length
         for(j = 0; array.length > j; j++){
             texto = array[j]
             for(i = 0; myle > i; i++)
@@ -63,8 +59,8 @@ module.exports=
             message.channel.send(texto) 
         }*/
 
-        //busca o cargo
-        function myrole(id)
+    //busca o cargo
+    function myrole(id)
         {
             if(id.length > 4)
             {
@@ -77,10 +73,10 @@ module.exports=
                 return role  
             }       
 
-        }
-        
-        //busca o canal 
-        function mychannel(id)
+    }
+    
+    //busca o canal 
+    function mychannel(id)
         {
             if(!id && id != 0) return
 
@@ -94,10 +90,10 @@ module.exports=
                 let chan = message.guild.channels.cache.find(r => r.id == `${channelList[id]}`)
                 return chan
             }
-        }
+    }
 
-        //busca as permissoes
-        function permissoes(perms)
+    //busca as permissoes
+    function permissoes(perms)
         {
             let permtemp = []
             for(j = 0; array.length > j; j++)
@@ -113,10 +109,10 @@ module.exports=
             permlist =[]
             return permtemp
 
-        }
+    }
 
-        //criar o embed
-        function CriarEmbed(cargo)
+    //criar o embed
+    function CriarEmbed(cargo)
         {
             const Discord = require('discord.js')
 
@@ -127,10 +123,10 @@ module.exports=
             .setFooter('by FELCS', 'https://i.imgur.com/wSTFkRM.png');
            
             return embedp
-        }
-        
-        //adicionar infos
-        function addpcanal(canal, perms, embd) 
+    }
+    
+    //adicionar infos
+    function addpcanal(canal, perms, embd) 
         {
             embd.addFields
             (
@@ -138,9 +134,9 @@ module.exports=
                     name: `${canal}`, value: `${perms}` 
                 },
             )
-        }
+    }
 
-        function GetRoleMentions(args) 
+    function GetRoleMentions(args) 
         {
             if (!args) return;
 
@@ -157,8 +153,8 @@ module.exports=
 
 		        return ment
 	        }
-        }
-        function GetChannel(args) 
+    }
+    function GetChannel(args) 
         {
             if (!args) return;
 
@@ -178,6 +174,10 @@ module.exports=
 
 		        return ment
 	        }
-        }
-    }     
+    }
+        
+}
+module.exports.help ={
+    name: "poderes",
+    description: "mostra todos os poderes dos cargos de acordo coms os canais"
 }

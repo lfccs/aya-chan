@@ -1,12 +1,22 @@
-module.exports = {
-    name: "cargos",
-    description: "mostra todos os cargos de todos os membros do servidor",
-    execute(client, message, args){
+module.exports.run = async (client, message, args) => 
+{
         const fs = require(`fs`)
-        const data = require(`../database/${message.guild.id}.json`)
+        const data = require(`../database/${message.guild.id}/cargos.json`)
+        let dados = Object.entries(data).map(v => `${v[1].id}`)
+        let stringcargos = []
+        for (let i = 0; i < dados.length; i++)
+        {
+            let cargos = data[dados[i]].cargos
+            let cachecargos = []
+            for (let i = 0; i < cargos.length; i++) 
+            {
+               cachecargos.push(message.guild.roles.cache.find(f => f.id === cargos[i]))
+            }
+            stringcargos[dados[i]] = cachecargos
+        }
+        let string = Object.entries(stringcargos).map(r => `<@${r[0]}>:  ${r[1]}`).join(`\n\n`)
 
-        let dados = Object.entries(data).map(v => `${v[1].ping} - advertências: ${v[1].adv} | Mutado agora: \`${v[1].mute ? "Sim": "Não"}\` \n ${v[1].cargos}`).join('\n\n')
-        embedbuilder(client,message,"#00ffff","cargos dos membros",dados)
+            embedbuilder(client,message,"#00ffff","cargos dos membros",string)
         
 
         function embedbuilder(client, message, color, title, description, page, quantia,requisitos)
@@ -23,5 +33,9 @@ module.exports = {
             return message.channel.send(embed)
         }
 
-    }
+}
+module.exports.help =
+{
+    name: "cargos",
+    description: "mostra todos os cargos de todos os membros do servidor"
 }

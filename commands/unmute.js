@@ -1,9 +1,6 @@
-module.exports =
+module.exports.run = async (client,message, args) =>
 {
-    name: "unmute",
-    description : `desmuta o membro indicado\m ex: aya unmute \`@membro\` `,
-    execute(message, args)
-    {
+    
         let data = require(`../database/${message.guild.id}.json`)
         if(!message.member.hasPermission("MANAGE_MEMBERS")) return message.reply("Você não tem essa permissão")
         
@@ -24,16 +21,22 @@ module.exports =
         } 
         for (let i = 0; i < cargosl; i++) {
             let cargo = cargos[i]
-            adicionavel = gcargos.cache.find(r => r.id === cargo.id)
+            adicionavel = gcargos.cache.find(r => r.id === cargo)
             if(cargo.name != "@everyone") membro.roles.add(adicionavel)
             
         }
         let d = JSON.stringify(data, null, 4)
-        
-        message.channel.send(`<@${ment}> mutado`)
 
-        return d
+        message.channel.send(`<@${ment}> desmutado`)
+
+        client.database.get('save').run(client, message, args, d)
+
+        
                  
 
-    }
+    
+}
+module.exports.help ={
+    name: "unmute",
+    description : `desmuta o membro indicado\m ex: aya unmute \`@membro\` `
 }

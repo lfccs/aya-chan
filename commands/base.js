@@ -1,9 +1,5 @@
-module.exports=
+module.exports.run = async(message) =>
 {
-    name:"base",
-    execute(message){
-        
-
         // lista dos cargos 
         const roleList = message.guild.roles.cache.keyArray()
         let roleLength = roleList.length
@@ -15,5 +11,8 @@ module.exports=
         return console.log(members)
 
 
-    }
+}
+module.exports.help =
+{
+    name:"base"
 }
