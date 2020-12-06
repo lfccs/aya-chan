@@ -1,5 +1,6 @@
 module.exports.run = async ( client, message, args)=> 
 {
+    try{
     const fs = require('fs')
     const local = `../database/${message.guild.id}/mutes.json`
     const locale = `./database/${message.guild.id}/mutes.json`
@@ -70,7 +71,11 @@ module.exports.run = async ( client, message, args)=>
     client.database.get('save').run(client, message,args,d, locale)
     
    // message.channel.send(`membro mutado: ${memb}\ntempo ${temp}\nmotivo ${motivo}\n ${role}`)
-
+}
+catch(err)
+{
+    console.log(err)
+}
 }
 
 module.exports.help = 

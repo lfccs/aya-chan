@@ -31,7 +31,7 @@ client.once('ready', () => {
 //interactions
 client.on('message', async (message) => 
 {
-    if(message.content.startsWith(`y!`))
+    if(message.content.startsWith(`y!mute `))
     {}
     else if(!message.content.startsWith(config.prefix[0]) || message.author.bot) return
     //if(message.member.id !== '427193787094401045') return console.log(`usuario nao autorizado`)//message.channel.send('comandos em beta nao habilitados')
@@ -51,7 +51,7 @@ client.on('message', async (message) =>
         message.channel.send(err)
     }
     })
-
+    
     if (!fs.existsSync(`./database/${message.guild.id}/`)){
          fs.mkdirSync(`./database/${message.guild.id}/`, 0o776)
         }
@@ -130,8 +130,12 @@ client.on('message', async (message) =>
     function verificaradmeiro(message) 
     {
         try {
-            let verify = dataserver.admins
-            
+            let verify = Object.entries(dataserver.admins).map(f => f[1].id)
+            for (let i = 0; i < verify.length; i++)
+            {
+                if (ar.includes(verify[i])) return adm = false
+            }
+                        
         }catch (erro) {
             if(message.member.id != config.owner) adm = true
             else if (!message.member.hasPermission('ADMINISTRATOR')) adm = true   
@@ -141,7 +145,6 @@ client.on('message', async (message) =>
        {
          message.channel.send('sem acesso')                   
        }
-
 
     }
 
