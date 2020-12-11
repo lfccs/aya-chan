@@ -1,15 +1,13 @@
 {
     "owner": "427193787094401045",
-    "prefix": 
-    [
+    "prefix": [
         "aa",
         "a"
     ],
     "token": "Nzc3MTkxMzI5Mzg5MjE1NzY0.X6_11A.T36TZ-4E2hv3u6wOhdFpEO4cigc",
-    "array":
-    [
+    "array": [
         "ADMINISTRATOR",
-       "CREATE_INSTANT_INVITE",
+        "CREATE_INSTANT_INVITE",
         "KICK_MEMBERS",
         "BAN_MEMBERS",
         "MANAGE_CHANNELS",
@@ -40,7 +38,7 @@
         "MANAGE_WEBHOOKS",
         "MANAGE_EMOJIS"
     ],
-    "emojis":[
+    "emojis": [
         "1️⃣",
         "2️⃣",
         "3️⃣",
@@ -55,8 +53,7 @@
         "#️⃣",
         "*️⃣"
     ],
-    "nomes":
-    [
+    "nomes": [
         "Administrador",
         "Criar convite",
         "Kikar membros",
@@ -88,5 +85,57 @@
         "Gerenciar cargos",
         "Gerenciar Webhooks",
         "Gerenciar Emojis"
+    ],
+    "distube": [
+        "restringir",
+        "restrict",
+        "listasetup",
+        "admins",
+        "toca",
+        "t",
+        "filtros",
+        "ft",
+        "para",
+        "p",
+        "stop",
+        "skip",
+        "s",
+        "proxima",
+        "tempo",
+        "tp",
+        "volume",
+        "v",
+        "playlist",
+        "pl",
+        "musica",
+        "m",
+        "aleatorio",
+        "al",
+        "pause",
+        "ps",
+        "return",
+        "rt",
+        "autoplay",
+        "ap",
+        "procurar",
+        "config",
+        "c",
+        "help ",
+        "h",
+        "3d",
+        "bassboost",
+        "echo",
+        "karaoke",
+        "nightcore",
+        "vaporwave",
+        "flanger",
+        "gate",
+        "haas",
+        "reverse",
+        "surround",
+        "mcompand",
+        "phaser",
+        "tremolo",
+        "earwax"
     ]
 }

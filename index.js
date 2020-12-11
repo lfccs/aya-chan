@@ -4,7 +4,6 @@ const client = new discord.Client()
 const config = require('./config.json')
 const fs = require('fs')
 
-
 //command handler
 client.commands = new discord.Collection()
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'))
@@ -21,6 +20,11 @@ const databasefils = fs.readdirSync('./database/').filter(file => file.endsWith(
 const save = require('./save')
 client.database.set('save', save)
 
+//distube handler
+client.distube = new discord.Collection()
+const distub = require(`./distube/distube`)
+client.distube.set('distube', distub)
+
 
 // boot
 client.once('ready', () => {
@@ -31,7 +35,7 @@ client.once('ready', () => {
 //interactions
 client.on('message', async (message) => 
 {
-    if(message.content.startsWith(`y!mute `))
+    if(message.content.startsWith(`y!ute `))
     {}
     else if(!message.content.startsWith(config.prefix[0]) || message.author.bot) return
     //if(message.member.id !== '427193787094401045') return console.log(`usuario nao autorizado`)//message.channel.send('comandos em beta nao habilitados')
@@ -160,61 +164,20 @@ client.on('message', async (message) =>
         client.commands.get(`y!mute`).run(client, message, args)
         return
     }
-    else if (['admins'].includes(cmd))
-    {
+    else if(config.distube.includes(cmd)){
         verificaradmeiro(message)
-        if(adm) return
-        //else if(!message.member.roles.cache.get(f=> f.id )) return
-        let cargoadd = message.mentions.roles.first()
-        if (!cargoadd) return message.channel.send("escolha um cargo para permitir o uso do bot")
-        let x
-        try{
-            for (let i = 0; i < dataserver.admins.length; i++) {
-                x = dataserver.admins[i].id
-                if(x === cargoadd.id) i = dataserver.admins.length               
-            }
-        }
-        catch{}
-        if(x)
-        {
-            if( x === cargoadd.id){
-                let remove = dataserver.admins.findIndex(f => f.id === x)
-                dataserver.admins.splice(remove,1)
-                message.channel.send("cargo de admin removido")
-            
-                
-            }
-            else if(x !== cargoadd.id)
-            {
-                dataserver.admins.push(cargoadd)
-                message.channel.send("cargo de admin adicionado")
-            }
-        } 
-        else
-        {
-            dataserver.admins.push(cargoadd)
-            message.channel.send("cargo de admin adicionado")            
-        } 
-        let js = JSON.stringify(dataserver,null, 4)
-        fs.writeFileSync(localdata, js, null, err => {
-            if(err)
-            {
-                console.log(err)
-            }
-        })
-        
+        client.distube.get(`distube`).run(client, message,args, cmd, adm, bol)
     }
-
     
-    let comando = client.commands.get(cmd)
+    else {
+        let comando = client.commands.get(cmd)
     try{
       comando.run(client, message, args)
     }
     catch (e){
         console.log('\n\ncomando inexistente ')
     }
-
+}
 })  
-
 
 client.login(config.token)
