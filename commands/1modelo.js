@@ -1,8 +1,9 @@
 module.exports.run = async ( client, message, args)=> 
 {
-    try {
+    try {        
         
     } catch (error) {
+        console.log(error);
         
     }
 

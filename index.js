@@ -19,11 +19,8 @@ client.database = new discord.Collection()
 const databasefils = fs.readdirSync('./database/').filter(file => file.endsWith('.js'))
 const save = require('./save')
 client.database.set('save', save)
-
-//distube handler
-client.distube = new discord.Collection()
-const distub = require(`./distube/distube`)
-client.distube.set('distube', distub)
+const reload = require(`./reload`)
+client.database.set(`reload`, reload)
 
 
 // boot
@@ -164,9 +161,9 @@ client.on('message', async (message) =>
         client.commands.get(`y!mute`).run(client, message, args)
         return
     }
-    else if(config.distube.includes(cmd)){
+    else if(cmd === `reload`){
         verificaradmeiro(message)
-        client.distube.get(`distube`).run(client, message,args, cmd, adm, bol)
+        client.database.get(`reload`).run(client, message,args)
     }
     
     else {
