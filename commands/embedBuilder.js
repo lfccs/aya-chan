@@ -1,4 +1,4 @@
-module.exports.run = (client, message, color, title, description, page, quantia, requisitos) => {
+module.exports.run = (client, message, color, title, description, page, quantia, requisitos, enviar) => {
     try {
         const discord = require(`discord.js`)
         let embed = new discord.MessageEmbed()
@@ -9,6 +9,7 @@ module.exports.run = (client, message, color, title, description, page, quantia,
         if (title) embed.setTitle(title)
         if (description) embed.setDescription(description)
         if (page) return embed
+        if(enviar) return embed
         return message.channel.send(embed)
     } catch (e) {
         console.log(e);
