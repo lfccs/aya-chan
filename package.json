@@ -18,7 +18,7 @@
   "homepage": "https://github.com/lfccs/aya-chan#readme",
   "dependencies": {
     "@discordjs/opus": "^0.3.3",
-    "discord.js": "^12.4.1",
+    "discord.js": "^12.5.1",
     "distube": "^2.8.3",
     "fs": "0.0.1-security",
     "opusscript": "0.0.7",

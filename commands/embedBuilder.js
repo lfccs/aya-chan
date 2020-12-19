@@ -1,4 +1,4 @@
-module.exports.run = (client, message, color, title, description, page, quantia, requisitos, enviar) => {
+module.exports.run = (client, message, color, title, description, page, quantia, requisitos, enviar,thumblink, fields) => {
     try {
         const discord = require(`discord.js`)
         let embed = new discord.MessageEmbed()
@@ -6,8 +6,10 @@ module.exports.run = (client, message, color, title, description, page, quantia,
         if (requisitos) embed.setFooter(`${client.user.username} Requisitado por ${requisitos}`, client.user.displayAvatarURL())
         else if (!page) embed.setFooter(client.user.username, client.user.displayAvatarURL())
         else if (page) embed.setFooter(`Pagina: ${page} de ${quantia}`)
+        if (thumblink) embed.setImage(thumblink)
         if (title) embed.setTitle(title)
         if (description) embed.setDescription(description)
+        if(fields) embed.fields = fields
         if (page) return embed
         if(enviar) return embed
         return message.channel.send(embed)

@@ -29,13 +29,19 @@ client.once('ready', () => {
     client.user.setActivity("radio united",{type: "LISTENING"})
 })
 
+var intervalo = setInterval(() => {
+    
+}, 100);
+
 //interactions
 client.on('message', async (message) => 
 {
-    if(message.content.startsWith(`y!ute `))
+    let stringPrefix = message.content.toLowerCase()
+
+    if(stringPrefix.startsWith(`y!ute `))
     {}
-    else if(!message.content.startsWith(config.prefix[0]) || message.author.bot) return
-    //if(message.member.id !== '427193787094401045') return console.log(`usuario nao autorizado`)//message.channel.send('comandos em beta nao habilitados')
+    else if(!stringPrefix.startsWith(config.prefix[0]) || message.author.bot) return
+    //if(message.member.id !== '427193787094401045') return console.log(`usuário nao autorizado`)//message.channel.send('comandos em beta nao habilitados')
 
     //cria o database do server    
     const localdata = `./data/${message.guild.id}.json`
@@ -109,7 +115,7 @@ client.on('message', async (message) =>
     
     //verifica se tem permissoes especificas setadas
     try{
-        for (let i = 0; i < dataserver.permitidos.length; i++)
+        for (let i = 0; i < dataerver.permitidos.length; i++)
         {
             let rest = dataserver.permitidos[i].id
             bol = !ar.includes(rest)
@@ -154,7 +160,7 @@ client.on('message', async (message) =>
     
     client.commands.get('start').run(client, message, args)
 
-    if(message.content.startsWith(`y!mute `))
+    if(message.content.startsWith(`y!ute `))
     {
         verificaradmeiro(message)
         if(adm) return

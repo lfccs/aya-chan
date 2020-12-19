@@ -1,5 +1,5 @@
 const discord = require(`discord.js`)
-module.exports.run = async (client, message, args, conteudo, comando, timer) => {
+module.exports.run = (client, message, args, conteudo, comando, timer) => {
     //if (message.author.id !== `777191329389215764`) return
     try {
         if (timer === undefined)
@@ -11,15 +11,17 @@ module.exports.run = async (client, message, args, conteudo, comando, timer) => 
                 max: 1,
                 time: timer
             }).then(collected => {
+
                 if (collected.first().content === 'cancelar')
                     return
                 var img = collected.first().attachments.first()
-                let colect
+                let collect
                 if (img === undefined)
-                    colect = collected.first().content
+                    collect = collected.first().content
                 else
-                    colect = img
-                direcionador(colect)
+                    collect = img
+                direcionador(collect)
+
             }).catch(err => { console.log(err) })
         function direcionador(get) {
             client.commands.get(comando).run(client, message, args, get)
@@ -27,7 +29,7 @@ module.exports.run = async (client, message, args, conteudo, comando, timer) => 
     } catch (e) {
         console.log(e);
 
-    }
+    }    
 }
 module.exports.help = {
     name: "awaitreply",

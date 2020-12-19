@@ -13,8 +13,7 @@ module.exports.run = async (client, message, args) => {
 
             let d = JSON.stringify(data, null, 4)
             client.database.get(`save`).run(client, message, args, d, locale)
-
-
+            message.channel.send(`canal setado com sucesso!`)
 
 
         }

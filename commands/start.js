@@ -18,9 +18,9 @@ module.exports.run = async (client, message, args) => {
 
             let memb = message.guild.members.cache.find(r => r.id === `${members[i]}`)
             let lista = memb.roles.cache.keyArray()
-            if (lista.includes(configmute.cargomute))
-                data[members[i]].mute = true
             let cond2 = !data[members[i]]
+            if (lista.includes(configmute.cargomute) && !cond2)
+                data[members[i]].mute = true
             let cond1
             if (!cond2) cond1 = !data[members[i]].mute
             let adv
