@@ -19,9 +19,11 @@
   "dependencies": {
     "@discordjs/opus": "^0.3.3",
     "discord.js": "^12.5.1",
-    "distube": "^2.8.3",
+    "distube": "^2.8.8",
+    "ffmpeg-static": "^4.2.7",
     "fs": "0.0.1-security",
     "opusscript": "0.0.7",
-    "ytdl-core": "^4.0.3"
+    "ytdl-core": "^4.2.1",
+    "ytpl": "^2.0.3"
   }
 }
