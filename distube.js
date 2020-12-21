@@ -22,9 +22,16 @@ module.exports.run = async () => {//config
         //valida se a mensagem e um comando
         if (!message.content.startsWith(config.prefix[0]) || message.author.bot) return
 
+        //pega os dados necessários da mensagem para executar os comandos 
+        const args = message.content.slice(config.prefix[0].length).trim().split(/ +/g)
+        const cmd = args.shift().toLowerCase()
+
+        if (!config.distube.includes(cmd)) return console.log('nao e um cmd do distube');
+        
+
         //cria o database do server
-        const localdata = `./data/${message.guild.id}.json`
-        if (!fs.existsSync(localdata)) fs.writeFileSync(localdata,
+        const localData = `./data/${message.guild.id}.json`
+        if (!fs.existsSync(localData)) fs.writeFileSync(localData,
             JSON.stringify({
                 "permitidos": [
                 ],
@@ -40,40 +47,37 @@ module.exports.run = async () => {//config
 
 
         //pega o database do server existente
-        const dataserver = require(localdata)
+        const dataServer = require(localData)
 
 
-        //busca as variaveis nescessarias para validaçao de permissoes 
+        //busca as variáveis necessárias para validação de permissões 
         let ar = message.member.roles.cache.keyArray()
         let bol = false
         let adm = false
 
-        //verifica se tem permissoes especificas setadas
+        //verifica se tem permissões especificas setadas
         try {
-            for (let i = 0; i < dataserver.permitidos.length; i++) {
-                let rest = dataserver.permitidos[i].id
+            for (let i = 0; i < dataServer.permitidos.length; i++) {
+                let rest = dataServer.permitidos[i].id
                 bol = !ar.includes(rest)
-                if (!bol) i = dataserver.permitidos.length
+                if (!bol) i = dataServer.permitidos.length
             }
         }
         catch{ bol = false }
         try {
-            for (let i = 0; i < dataserver.admins.length; i++) {
-                let ad = dataserver.admins[i].id
+            for (let i = 0; i < dataServer.admins.length; i++) {
+                let ad = dataServer.admins[i].id
                 adm = !ar.includes(ad)
-                if (!adm) i = dataserver.admins.length
+                if (!adm) i = dataServer.admins.length
             }
         }
         catch{ adm = false }
 
 
-        //pega os dados nescessarios da mensagem para executar os comandos 
-        const args = message.content.slice(config.prefix[0].length).trim().split(/ +/g)
-        const cmd = args.shift().toLowerCase()
 
         function verificaradmeiro(message) {
             try {
-                let verify = Object.entries(dataserver.admins).map(f => f[1].id)
+                let verify = Object.entries(dataServer.admins).map(f => f[1].id)
                 for (let i = 0; i < verify.length; i++) {
                     if (ar.includes(verify[i])) return adm = false
                 }
@@ -102,28 +106,28 @@ module.exports.run = async () => {//config
                 if (!cargoadd) return message.channel.send("escolha um cargo para permitir o uso do bot")
                 let x
                 try {
-                    for (let i = 0; i < dataserver.permitidos.length; i++) {
-                        x = dataserver.permitidos[i].id
-                        if (x === cargoadd.id) i = dataserver.permitidos.length
+                    for (let i = 0; i < dataServer.permitidos.length; i++) {
+                        x = dataServer.permitidos[i].id
+                        if (x === cargoadd.id) i = dataServer.permitidos.length
                     }
                 }
                 catch{ }
                 if (x) {
                     if (x === cargoadd.id) {
-                        dataserver.permitidos.pop()
+                        dataServer.permitidos.pop()
                         message.channel.send("restriçao removida")
                     }
                     else {
-                        dataserver.permitidos.push(cargoadd)
+                        dataServer.permitidos.push(cargoadd)
                         message.channel.send("restriçao adicionada")
                     }
                 }
                 else {
-                    dataserver.permitidos.push(cargoadd)
+                    dataServer.permitidos.push(cargoadd)
                     message.channel.send("restriçao adicionada")
                 }
-                let js = JSON.stringify(dataserver, null, 4)
-                fs.writeFileSync(localdata, js, null, err => {
+                let js = JSON.stringify(dataServer, null, 4)
+                fs.writeFileSync(localData, js, null, err => {
                     if (err) {
                         console.log(err)
                     }
@@ -136,8 +140,8 @@ module.exports.run = async () => {//config
                 adm = verificaradmeiro(message)
                 if (adm) return
 
-                let adms = Object.entries(dataserver.admins).map(v => `${v[1].id}`)
-                let perms = Object.entries(dataserver.permitidos).map(v => `${v[1].id}`)
+                let adms = Object.entries(dataServer.admins).map(v => `${v[1].id}`)
+                let perms = Object.entries(dataServer.permitidos).map(v => `${v[1].id}`)
                 let stringcargos = []
                 let cachecargos = []
                 for (let i = 0; i < adms.length; i++) {
@@ -166,31 +170,31 @@ module.exports.run = async () => {//config
                 if (!cargoadd) return message.channel.send("escolha um cargo para permitir o uso do bot")
                 let x
                 try {
-                    for (let i = 0; i < dataserver.admins.length; i++) {
-                        x = dataserver.admins[i].id
-                        if (x === cargoadd.id) i = dataserver.admins.length
+                    for (let i = 0; i < dataServer.admins.length; i++) {
+                        x = dataServer.admins[i].id
+                        if (x === cargoadd.id) i = dataServer.admins.length
                     }
                 }
                 catch{ }
                 if (x) {
                     if (x === cargoadd.id) {
-                        let remove = dataserver.admins.findIndex(f => f.id === x)
-                        dataserver.admins.splice(remove, 1)
+                        let remove = dataServer.admins.findIndex(f => f.id === x)
+                        dataServer.admins.splice(remove, 1)
                         message.channel.send("cargo de admin removido")
 
 
                     }
                     else if (x !== cargoadd.id) {
-                        dataserver.admins.push(cargoadd)
+                        dataServer.admins.push(cargoadd)
                         message.channel.send("cargo de admin adicionado")
                     }
                 }
                 else {
-                    dataserver.admins.push(cargoadd)
+                    dataServer.admins.push(cargoadd)
                     message.channel.send("cargo de admin adicionado")
                 }
-                let js = JSON.stringify(dataserver, null, 4)
-                fs.writeFileSync(localdata, js, null, err => {
+                let js = JSON.stringify(dataServer, null, 4)
+                fs.writeFileSync(localData, js, null, err => {
                     if (err) {
                         console.log(err)
                     }
@@ -376,9 +380,13 @@ module.exports.run = async () => {//config
     const status = (queue) => `Volume: \`${queue.volume}\` | Filtro : \`${queue.filter || "OFF"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode === 2 ? "Toda playlist" : "Essa musica" : "Off"}\` | Autoplay: \`${queue.autoplay ? "on" : "off"}\` \n Procurar lista de musicas \`${distube.options.searchSongs ? "on" : "off"}\``
 
 
-    //captadoer de eventos do stream das musicas
+    //captador de eventos do stream das musicas
 
     distube
+        .on("initQueue", queue => {
+            queue.autoplay = false;
+            queue.volume = 100;
+        })
         .on("playSong", (message, queue, song) => {
             embedbuilder(client, message, "#00ff00", "tocando agora!", `Musica: [${song.name}](${song.url}) | \`${song.formattedDuration}\` \n\n ${status(queue)}`, "", "", song.user.username)
         })
