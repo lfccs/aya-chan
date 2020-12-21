@@ -1,10 +1,9 @@
-export function getRolesAdmin(dataServer, message) {
+module.exports.getRolesAdmin = (dataServer, message) => {
 
     // busca as variáveis necessárias para validaÃ§ao de permissões 
     let ar = message.member.roles.cache.keyArray()
     let bol = false
     let adm = false
-    let adm
 
     //verifica se tem permissões especificas seteadas
     try {
@@ -23,9 +22,13 @@ export function getRolesAdmin(dataServer, message) {
         }
     }
     catch{ adm = false }
+    
+    console.log(`Roles Verified`);
+    
     return adm
+
 }
-export function verificaradmeiro(message) {
+module.exports.verificaradmeiro = (message) => {
     try {
         let verify = Object.entries(dataServer.admins).map(f => f[1].id)
         for (let i = 0; i < verify.length; i++) {

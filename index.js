@@ -1,5 +1,6 @@
 const distube = require(`./distube`)
 distube.run()
+const fs = require(`fs`)
 const discord = require('discord.js')
 const client = new discord.Client()
 const config = require('./config.json')
@@ -26,23 +27,26 @@ client.on('message', async (message) => {
     // get prefix
     let stringPrefix = message.content.toLowerCase()
     let prefixVerify
+    let pref
     for (prefix of config.prefix) {
-        if (!stringPrefix.startsWith(prefix))
-            prefixVerify = false
-        else {
-            prefixVerify = true
-            return
+        if (!prefixVerify) {
+            if (!stringPrefix.startsWith(prefix))
+                prefixVerify = false
+            else {
+                prefixVerify = true
+                pref = prefix
+            }
         }
     }
     if (!prefixVerify || message.author.bot) return
     //if(message.member.id !== '427193787094401045') return console.log(`usuário nao autorizado`)//message.channel.send('comandos em beta nao habilitados')
 
     //pick data    
-    const args = message.content.slice(config.prefix[0].length).trim().split(/ +/g)
+    const args = message.content.slice(pref.length).trim().split(/ +/g)
     const cmd = args.shift().toLowerCase()
 
     //cria o database do server    
-    const localData = files.fileManager()
+    const localData = files.fileManager(message)
 
     //music commands
     if (config.distube.includes(cmd)) return

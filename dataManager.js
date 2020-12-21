@@ -1,4 +1,5 @@
-module.exports = function fileManager() {
+const fs = require(`fs`)
+module.exports.fileManager = (message) => {
     const localData = `./data/${message.guild.id}.json`
     if (!fs.existsSync(localData)) {
         fs.writeFileSync(localData,
