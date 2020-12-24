@@ -1,7 +1,7 @@
 module.exports.run = async () => {//config 
     const discord = require('discord.js')
     const client = new discord.Client()
-    let dir = '../aya-chan/config.json'
+    let dir = './config.json'
     const config = require(dir)
     const DisTube = require('distube')
     const fs = require(`fs`)

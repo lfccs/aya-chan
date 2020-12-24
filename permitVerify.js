@@ -1,14 +1,16 @@
+const config = require(`./config.json`)
+let bol = false
+let adm = false
+
 module.exports.getRolesAdmin = (dataServer, message) => {
 
-    // busca as variáveis necessárias para validaÃ§ao de permissões 
+    // busca as variáveis necessárias para 
     let ar = message.member.roles.cache.keyArray()
-    let bol = false
-    let adm = false
 
     //verifica se tem permissões especificas seteadas
     try {
-        for (let i = 0; i < dataServer.permitidos.length; i++) {
-            let rest = dataServer.permitidos[i].id
+        for (const perm of dataServer.permitidos) {
+            let rest = perm.id
             bol = !ar.includes(rest)
             if (!bol) i = dataServer.permitidos.length
         }
@@ -25,10 +27,13 @@ module.exports.getRolesAdmin = (dataServer, message) => {
     
     console.log(`Roles Verified`);
     
-    return adm
+    return {adm, bol}
 
 }
-module.exports.verificaradmeiro = (message) => {
+module.exports.verificaradmeiro = (dataServer, message) => {
+
+    let ar = message.member.roles.cache.keyArray()
+
     try {
         let verify = Object.entries(dataServer.admins).map(f => f[1].id)
         for (let i = 0; i < verify.length; i++) {
@@ -36,7 +41,9 @@ module.exports.verificaradmeiro = (message) => {
         }
 
     } catch (erro) {
-        if (message.member.id != config.owner) adm = true
+        console.log(erro);
+        
+        if (message.member.id !== config.owner) adm = true
         else if (!message.member.hasPermission('ADMINISTRATOR')) adm = true
     }
 

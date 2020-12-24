@@ -9,6 +9,8 @@ const permVerify = require(`./permitVerify`)
 const handler = require(`./handlers`)
 client.commands = new discord.Collection()
 client.database = new discord.Collection()
+let adm
+let bol
 
 //command handler
 handler.commandHandler(client)
@@ -54,22 +56,15 @@ client.on('message', async (message) => {
     //pega o database do server existente
     const dataServer = require(localData)
 
-    adm = permVerify.getRolesAdmin(dataServer, message)
-
+    let pv = permVerify.getRolesAdmin(dataServer, message)
+    bol = pv.bol
+    adm = pv.adm
 
     client.commands.get('start').run(client, message, args)
 
-    if (message.content.startsWith(`y!ute `)) {
-        adm = permVerify.verificaradmeiro(message)
-        if (adm) return
-        client.commands.get(`y!mute`).run(client, message, args)
-        return
-    }
-    else if (cmd === `reload`) {
-        client.database.get(`reload`).run(client, message, args)
-    }
 
-    else {
+    if (cmd != `reload`) {
+        adm = permVerify.verificaradmeiro(dataServer, message)
         let comando = client.commands.get(cmd)
         try {
             comando.run(client, message, args)
@@ -78,6 +73,10 @@ client.on('message', async (message) => {
             console.log('comando inexistente ')
         }
     }
+    else {
+        client.database.get(`reload`).run(client, message, args)
+    }
+
 })
 
 client.login(config.token)
