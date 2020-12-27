@@ -1,6 +1,7 @@
 module.exports.run = async (client, message, args, adm) => {
     try {
         if (adm) {
+            message.channel.send('sem acesso')
             return
         }
         if (!args) {

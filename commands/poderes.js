@@ -1,5 +1,9 @@
-module.exports.run = async (client, message, args) => {
+module.exports.run = async (client, message, args, adm) => {
     try {
+        if (adm) {
+            message.channel.send('sem acesso')
+            return
+        }
         const fs = require("fs")
         var texto = ""
         var permlist = []

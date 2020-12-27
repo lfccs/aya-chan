@@ -47,8 +47,5 @@ module.exports.verificaradmeiro = (dataServer, message) => {
         else if (!message.member.hasPermission('ADMINISTRATOR')) adm = true
     }
 
-    if (adm) {
-        message.channel.send('sem acesso')
-    }
     return adm
 }
