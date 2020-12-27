@@ -3,6 +3,18 @@ module.exports.run = (client, message, args, resposta) => {
         const data = require(`../database/${message.guild.id}/data.json`)
         const locale = `./database/${message.guild.id}/data.json`
         if (data[`canal`] === undefined) return message.channel.send(`configure o canal para os reports`)
+        if (!data[`${message.author.id}`]) {
+            data[`${message.author.id}`] = {
+                key: 0,
+                denunciado: ``,
+                motivo: ``,
+                linkimg: ``,
+                messages: 2
+            }
+        }
+        else
+            data[`${message.author.id}`].messages = data[`${message.author.id}`].messages + 2
+
         let embed
         let descrit
         let d
@@ -12,13 +24,7 @@ module.exports.run = (client, message, args, resposta) => {
         }
         if (resposta === `iniciar`) {
 
-            data[`${message.author.id}`] = {
-                key: 1,
-                denunciado: ``,
-                motivo: ``,
-                linkimg: ``,
-                messages: []
-            }
+            data[`${message.author.id}`].key = 1
             d = JSON.stringify(data, null, 4)
             client.database.get(`save`).run(client, message, args, d, locale)
 
@@ -33,14 +39,14 @@ module.exports.run = (client, message, args, resposta) => {
 
         const datauser = data[`${message.author.id}`]
         let key
-        if (datauser === undefined)
-            key = undefined
+        if (datauser === 0)
+            key = 0
         else
             key = datauser.key
 
 
         switch (key) {
-            case undefined:
+            case 0:
                 descrit =
                     `Oii, quer fazer uma denuncia?
                 beleza, só preciso que você tenha as respostas pra essas perguntas
@@ -103,13 +109,13 @@ module.exports.run = (client, message, args, resposta) => {
                             'name': nome
                         }
                     };
-                    
+
                     request(options, function (error, response) {
                         if (error) throw new Error(error);
                         var resp = JSON.parse(response.body)
                         data[`${message.author.id}`].linkimg = resp.data[`link`]
                     });
-                    
+
                     if (data[`${message.author.id}`].denunciado.length === 18) {
                         data[`${message.author.id}`].denunciado = `<@${data[`${message.author.id}`].denunciado}>`
                     }
@@ -122,7 +128,7 @@ module.exports.run = (client, message, args, resposta) => {
                         `Marque um ${role}\n caso nenhum esteja ON marque um ${role2} ON!`
                     embed = client.commands.get(`embedBuilder`).run(client, message, `BLUE`, `Denunciar`, descrit, '', '', '', true)
                     client.commands.get(`awaitreply`).run(client, message, args, embed, `denunciar`, 120000)
-    
+
                 }
                 break;
             case 4:
@@ -149,17 +155,9 @@ module.exports.run = (client, message, args, resposta) => {
                 descrit = `${message.author} sua denuncia foi enviada com sucesso!`
                 embed = client.commands.get(`embedBuilder`).run(client, message, `GREEN`, `Obrigado por sua ajuda!`, descrit, '', '', '', true)
 
-                let id = message.channel.messages.cache.keyArray()
-                let deletar = []
-                for (let i = 0; i < 12; i++) {
-                    index = id.length - i
-                    deletar.push(id[index])
-                }
-                for (let i = 0; i < deletar.length; i++) {
-                    message.channel.messages.fetch(deletar[i]).then(msg => {
-                        msg.delete()
-                    })
-                }
+                amount = data[`${message.author.id}`].messages - 1
+                client.commands.get(`apagar`).run(message, amount)
+
                 message.channel.send(embed)
 
 
