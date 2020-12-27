@@ -25,17 +25,17 @@ module.exports.run = async (client, message, args, adm) => {
             trim = mention
        }
         let memb = cargos[trim]
-        let datamembro = data[memb.ping]
-        if (!datamembro) {
+        let dataMembro = data[memb.ping]
+        if (!dataMembro) {
             data[memb] = {
                 advertencia: "",
                 motivos: []
             }
             let d = JSON.stringify(data, null, 4)
             client.database.get('save').run(client, message, args, d, locale)
-            datamembro = data[memb]
+            dataMembro = data[memb]
         }
-        let listamotivos = datamembro.motivos
+        let listaMotivos = dataMembro.motivos
         let membro = args[0]
         let temp = args[1]
         let motivo = args.slice(2).join(" ")
@@ -65,12 +65,12 @@ module.exports.run = async (client, message, args, adm) => {
             memb = message.guild.members.cache.find(f => f.id === memb.id)
             memb.roles.add(role)
         }
-        listamotivos[numbadv] = motivo
+        listaMotivos[numbadv] = motivo
 
         if (numbadv <= 4) {
             data[memb] = {
                 advertencia: role.id,
-                motivos: listamotivos
+                motivos: listaMotivos
             }
         }
 
@@ -93,10 +93,3 @@ module.exports.help =
     description: `plugin do mute do yag`
 }
 
-
-//`0`:"<@!456612726874308629>",
-//`1`:"180",
-//`2`:"motivo",
-//`3`:"de",
-//`4`:"ser",
-//`5`:"besta"

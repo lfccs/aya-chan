@@ -21,7 +21,7 @@ module.exports.run = async (client, message, args) => {
             let cond2 = !data[members[i]]
             if (lista.includes(configmute.cargomute) && !cond2)
                 data[members[i]].mute = true
-            else
+            else if (!cond2)
                 data[members[i]].mute = false
 
             let cond1

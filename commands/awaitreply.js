@@ -5,11 +5,7 @@ module.exports.run = (client, message, args, conteudo, comando, timer) => {
         if (timer === undefined)
             timer = 60000
         const filter = m => m.author.id === message.author.id
-        message.reply(conteudo).then(msg => {
-            msg.delete(timer)
-        }).catch(e => {
-            console.log(e);
-        })
+        message.reply(conteudo)
         message.channel.awaitMessages(filter,
             {
                 max: 1,
