@@ -1,0 +1,9 @@
+# Packages
+node_modules/
+database/
+data/
+
+# Authentication
+config.json
+package.json
+package_lock.json
