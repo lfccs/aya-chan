@@ -11,7 +11,7 @@ client.commands = new discord.Collection()
 client.database = new discord.Collection()
 let adm
 let bol
-
+const rss = require('./rss/timers')
 //command handler
 handler.commandHandler(client)
 
@@ -22,10 +22,24 @@ handler.dataHandler(client)
 client.once('ready', () => {
     console.log(`aya acordou!! ${client.user.tag}`)
     client.user.setActivity("radio united", { type: "LISTENING" })
+    rss(client)
 })
 
 //interactions
 client.on('message', async (message) => {
+    
+
+    const d = require(`./database/447096261921996800/data`)
+
+    if(message.author.bot) return
+    if (d.canalCriado) {
+        if (message.channel.id === d.canalCriado) {
+            client.commands.get(`enviarMSGS`).run(client, message)
+        }
+        if (message.channel.id === d.canalConversa) {
+            client.commands.get(`recebermsgs`).run(client, message)            
+        }
+    }
     // get prefix
     let stringPrefix = message.content.toLowerCase()
     let prefixVerify
@@ -40,7 +54,8 @@ client.on('message', async (message) => {
             }
         }
     }
-    if (!prefixVerify || message.author.bot) return
+
+    if (!prefixVerify) return
     //if(message.member.id !== '427193787094401045') return console.log(`usuário nao autorizado`)//message.channel.send('comandos em beta nao habilitados')
 
     //pick data    
@@ -67,7 +82,7 @@ client.on('message', async (message) => {
         adm = permVerify.verificaradmeiro(dataServer, message)
         let comando = client.commands.get(cmd)
         try {
-            comando.run(client, message, args)
+            comando.run(client, message, args, adm)
         }
         catch (e) {
             console.log('comando inexistente ')
@@ -76,7 +91,6 @@ client.on('message', async (message) => {
     else {
         client.database.get(`reload`).run(client, message, args)
     }
-
 })
 
 client.login(config.token)
